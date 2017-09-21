@@ -14,6 +14,7 @@ import org.geolatte.geom.jts.JTS;
 import org.junit.Assert;
 import org.junit.Test;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
@@ -492,5 +493,17 @@ public class GeogratTests {
 		assertTrue(jtsGeo instanceof Polygon);
 		assertFalse(jtsGeo.isRectangle());
 		assertNull(jtsGeo.getUserData());
+	}
+
+	@Test
+	public void testPointWithNullZ() {
+
+		SDOGeometry sdo =
+				SDOGeometryHelper.sdoGeometry(3001, 0, new SDOPoint(33376662.068, 6019344.242, null), null, null);
+
+		@SuppressWarnings("unchecked")
+		com.vividsolutions.jts.geom.Geometry jtsGeo = JTS.to(Decoders.decode(sdo));
+		Assert.assertTrue(jtsGeo.isValid());
+		Assert.assertTrue(jtsGeo instanceof Point);
 	}
 }
